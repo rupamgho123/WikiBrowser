@@ -3,6 +3,7 @@ package com.microsoft.wikibrowser.providers;
 import com.microsoft.wikibrowser.interfaces.Provider;
 import com.microsoft.wikibrowser.services.WikiService;
 import java.security.SecureRandom;
+import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
@@ -49,6 +50,8 @@ public class WikiServiceProvider implements Provider<WikiService>{
             return true;
           }
         })
+        .readTimeout(10, TimeUnit.SECONDS)
+        .connectTimeout(10, TimeUnit.SECONDS)
         .build();
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl("https://en.wikipedia.org/")
