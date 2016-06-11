@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.microsoft.wikibrowser.R;
 import com.microsoft.wikibrowser.models.Page;
+import com.microsoft.wikibrowser.models.Pages;
 import com.microsoft.wikibrowser.models.SearchResponse;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
@@ -26,7 +28,15 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Wi
     this.searchResponse = searchResponse;
     this.context = context;
     pages = new ArrayList<>();
-    pages.addAll(searchResponse.getQuery().getPages().values());
+    if(searchResponse.getQuery() != null) {
+      Pages query = searchResponse.getQuery();
+      if(query.getPages() != null) {
+        pages.addAll(query.getPages().values());
+      }
+    }
+    if(pages.size() == 0){
+      Toast.makeText(context,"No results from wikipedia",Toast.LENGTH_LONG).show();
+    }
   }
 
   @Override public WikiPageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
